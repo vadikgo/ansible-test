@@ -1,0 +1,21 @@
+---
+- hosts: all
+  sudo: true
+  tasks:
+    - name: update system
+      yum: name=* state=latest
+    - name: ensure packages required are installed
+      yum: pkg={{item}} state=latest
+      with_items:
+        - vim
+        - bc
+        - unzip
+    - name: show uname
+      shell: uname -a
+  roles:
+    - williamyeh.oracle-java
+  vars:
+    java_version: 7
+    java_download_from_oracle: true
+    java_remove_download: false
+    java_subversion: 80
