@@ -1,6 +1,6 @@
 ---
 - hosts: all
-  sudo: true
+  become: true
   tasks:
     - name: update system
       yum: name=* state=latest
@@ -10,8 +10,10 @@
         - vim
         - bc
         - unzip
-    - name: show uname
-      shell: uname -a
+    - name: install unrar
+      yum: name=http://mirror.symnds.com/distributions/gf/el/6/gf/x86_64/unrar-5.2.3-1.gf.el6.x86_64.rpm disable_gpg_check=yes state=present
+    - name: test unrar
+      unarchive: src=files/test.rar dest=/tmp/
   roles:
     - williamyeh.oracle-java
   vars:
