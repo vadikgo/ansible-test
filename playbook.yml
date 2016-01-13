@@ -11,9 +11,10 @@
         - bc
         - unzip
     - name: install unrar
-      yum: name=http://mirror.symnds.com/distributions/gf/el/6/gf/x86_64/unrar-5.2.3-1.gf.el6.x86_64.rpm disable_gpg_check=yes state=present
+      yum: name={{unrar_url}} disable_gpg_check=yes state=present
+    - file: path=/tmp/test1 state=directory mode=0755
     - name: test unrar
-      unarchive: src=files/test.rar dest=/tmp/
+      unarchive: src={{test_url}} dest=/tmp/test1 copy=no
   roles:
     - williamyeh.oracle-java
   vars:
@@ -21,3 +22,5 @@
     java_download_from_oracle: true
     java_remove_download: false
     java_subversion: 80
+    test_url: http://10.211.55.2:8000/test.rar
+    unrar_url: http://mirror.symnds.com/distributions/gf/el/6/gf/x86_64/unrar-5.2.3-1.gf.el6.x86_64.rpm
