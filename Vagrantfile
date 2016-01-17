@@ -11,7 +11,7 @@ Vagrant.configure(2) do |config|
     prl.memory = "512"
     prl.name = "test1"
     prl.linked_clone = true
-    prl.update_guest_tools = true
+    prl.update_guest_tools = false
     #prl.check_guest_tools = false
   end
 
