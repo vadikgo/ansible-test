@@ -1,0 +1,13 @@
+jboss_version: 6.4
+install_path: /opt
+symlink: jboss
+jboss_home: /opt/jboss
+config_dir: /etc/jboss-as
+package_url: http://10.211.55.2:8080/jboss-eap-6.4-CVE-2015-7501.zip
+checksum: 627773f1798623eb599bbf7d39567f60941a706dc971c17f5232ffad028bc6f4
+log_dir: /var/log/jboss
+jboss_user: jboss
+jboss_group: jboss
+admin_user: admin
+admin_passwd: admin123
+start_on_boot: false

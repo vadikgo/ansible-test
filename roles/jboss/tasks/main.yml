@@ -1,0 +1,42 @@
+---
+- command: java -version
+  register: java_version
+  ignore_errors: True
+
+- name: Install Java 1.7 and some basic dependencies
+  yum: name=java-1.7.0-openjdk state=present
+  when: java_version|failed
+
+- name: Install unzip
+  yum: name=unzip state=present
+
+- name: Add jboss group
+  group: name={{jboss_group}} state=present
+
+- name: Add jboss user
+  user: name={{jboss_user}} group={{jboss_group}}
+
+- name: Download JBoss from jboss.org
+  unarchive: src={{package_url}} dest={{install_path}} copy=no owner={{jboss_user}} group={{jboss_group}} creates=/opt/jboss-eap-{{jboss_version}}
+
+- file: name={{config_dir}} state=directory mode=0755
+  when: ansible_user_id == "root"
+- file: name={{config_dir}} state=directory mode=0755 owner={{jboss_user}} group={{jboss_group}}
+  when: ansible_user_id == jboss_user
+- file: name={{log_dir}} state=directory mode=2775
+
+- file: src={{install_path}}/jboss-eap-{{jboss_version}} dest={{install_path}}/{{symlink}} state=link
+
+- template: src=jboss-as.conf dest={{config_dir}}/jboss-as.conf mode=0644
+  notify: restart jboss
+  when: ansible_user_id == "root"
+- template: src=jboss-as.conf dest={{config_dir}}/jboss-as.conf mode=0644 owner={{jboss_user}} group={{jboss_group}}
+  when: ansible_user_id == jboss_user
+
+- name: Copy the init script
+  copy: src=jboss-as-standalone-init.sh dest=/etc/init.d/jboss mode=0755
+  when: ansible_user_id == "root"
+
+- name: Enable jboss service
+  service: name=jboss enabled=yes
+  when: start_on_boot and (ansible_user_id == "root")

@@ -21,6 +21,7 @@ Vagrant.configure(2) do |config|
 #     sudo yum update -y
 #  SHELL
 
+  config.vm.provision "shell", inline: "yum install libselinux-python -y"
   config.vm.provision "ansible" do |ansible|
     ansible.verbose = "v"
     ansible.playbook = "playbook.yml"
