@@ -17,7 +17,7 @@
   user: name={{jboss_user}} group={{jboss_group}}
 
 - name: Download JBoss from jboss.org
-  unarchive: src={{package_url}} dest={{install_path}} copy=no owner={{jboss_user}} group={{jboss_group}} creates=/opt/jboss-eap-{{jboss_version}}
+  unarchive: src={{package_url}} dest={{install_path}} copy=yes owner={{jboss_user}} group={{jboss_group}} creates=/opt/jboss-eap-{{jboss_version}}
 
 - file: name={{config_dir}} state=directory mode=0755
   when: ansible_user_id == "root"

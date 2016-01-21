@@ -10,12 +10,8 @@
         - vim
         - bc
         - unzip
-    - name: Check if unrar is installed
-      command: rpm -q unrar
-      register: unrar_rpm_check
     - name: Install unrar if it is not installed
-      yum: name={{unrar_url}} disable_gpg_check=yes
-      when: unrar_rpm_check.stdout.find('is not installed') != -1
+      command: yum install {{unrar_url}} --nogpgcheck creates=/usr/bin/unrar
     #- name: test unrar
     #  unarchive: src={{test_url}} dest=/tmp/test1 copy=no
   roles:
@@ -27,5 +23,6 @@
     java_remove_download: false
     java_subversion: 80
     test_url: http://10.211.55.2:8000/test.rar
-    unrar_url: http://10.211.55.2:8080/unrar-5.2.3-1.gf.el6.x86_64.rpm
-    jdk_tarball_url:  http://10.211.55.2:8080/jdk-7u80-linux-x64
+    #unrar_url: http://10.211.55.2:8080/unrar-5.2.3-1.gf.el6.x86_64.rpm
+    unrar_url: http://packages.psychotic.ninja/6/base/x86_64/RPMS/unrar-5.2.4-2.el6.psychotic.x86_64.rpm
+    #jdk_tarball_url:  http://10.211.55.2:8080/jdk-7u80-linux-x64
