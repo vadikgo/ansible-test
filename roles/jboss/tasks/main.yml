@@ -37,6 +37,13 @@
   copy: src=jboss-as-standalone-init.sh dest=/etc/init.d/jboss mode=0755
   when: ansible_user_id == "root"
 
+- command: cat {{jboss_home}}/standalone/configuration/mgmt-users.properties
+  register: jboss_cat
+
+- name: Add admin user if the user is not found in mgmt-users.properties
+  command: "{{ jboss_home }}/bin/add-user.sh --silent -u {{ jboss_admin_user }} -p {{ jboss_admin_passwd }}"
+  when: (jboss_admin_user) and (jboss_cat.stdout.find('{{ jboss_admin_user }}') == -1)
+
 - name: Enable jboss service
   service: name=jboss enabled=yes
-  when: start_on_boot and (ansible_user_id == "root")
+  when: jboss_start_on_boot and (ansible_user_id == "root")
