@@ -42,7 +42,7 @@
 
 - name: Add admin user if the user is not found in mgmt-users.properties
   command: "{{ jboss_home }}/bin/add-user.sh --silent -u {{ jboss_admin_user }} -p {{ jboss_admin_passwd }}"
-  when: (jboss_admin_user) and (jboss_cat.stdout.find('{{ jboss_admin_user }}') == -1)
+  when: jboss_cat|match("admin")
 
 - name: Enable jboss service
   service: name=jboss enabled=yes

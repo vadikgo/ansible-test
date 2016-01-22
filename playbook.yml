@@ -12,6 +12,7 @@
         - unzip
     #- name: Install unrar if it is not installed
     #  command: yum install {{unrar_url}} --nogpgcheck creates=/usr/bin/unrar
+    #  ignore_errors: True
     #- name: test unrar
     #  unarchive: src={{test_url}} dest=/tmp/test1 copy=no
   roles:
