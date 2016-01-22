@@ -9,5 +9,5 @@ log_dir: /var/log/jboss
 jboss_user: jboss
 jboss_group: jboss
 jboss_admin_user: admin
-jboss_admin_passwd: admin123
+jboss_admin_passwd: 2Ws@Vehs6V
 jboss_start_on_boot: false
