@@ -1,0 +1,13 @@
+---
+- name: Create Liquibase directory
+  file: name=/opt/liquibase state=directory mode=0755 owner=root group=root
+
+- name: Install Liquibase
+  unarchive:
+    src: https://github.com/liquibase/liquibase/releases/download/liquibase-parent-{{ liquibase_version }}/liquibase-{{ liquibase_version }}-bin.tar.gz
+    dest: /opt/liquibase
+    copy: no
+    owner: root
+    group: root
+    mode: 0755
+    creates: /opt/liquibase/liquibase
