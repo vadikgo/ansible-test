@@ -1,0 +1,19 @@
+---
+- hosts: all
+  tasks:
+    - name: Copy wsadmin install_app script
+      template: src=templates/install_app.py dest=/tmp/install_app.py
+  vars:
+      ovp_tmpdir: /tmp/ovp
+      app: app
+      ovp_clusters:
+          - { name: CLS-AD, nodes: [SBT-OPBIB-213, SBT-OPBIB-214], prefix: AD,
+              apps: [ Ovp-Admin-15.3.0.war, SchedulerTask-15.3.0-AD.jar, OvpDiagnost-15.3.0.war ] }
+          - { name: CLS-AT, nodes: [SBT-OPBIB-215, SBT-OPBIB-216], prefix: AT,
+              apps: [ Trade-server-15.3.0-AT.war, SchedulerTask-15.3.0-AT.jar, OvpDiagnost-15.3.0.war ] }
+          - { name: CLS-FL, nodes: [SBT-OPBIB-217, SBT-OPBIB-218], prefix: FL,
+              apps: [Trade-server-15.3.0-FL.war, SchedulerTask-15.3.0-FL.jar, OvpDiagnost-15.3.0.war] }
+          - { name: CLS-IN, nodes: [SBT-OPBIB-217, SBT-OPBIB-218], prefix: IN,
+              apps: [Trade-server-15.3.0-IN.war, SchedulerTask-15.3.0-IN.jar, OvpDiagnost-15.3.0.war] }
+          - { name: CLS-WS, nodes: [SBT-OPBIB-217, SBT-OPBIB-218], prefix: WS,
+              apps: [Trade-server-15.3.0-WS.war, SchedulerTask-15.3.0-WS.jar, OvpDiagnost-15.3.0.war] }
