@@ -3,6 +3,8 @@
   tasks:
     - name: Copy wsadmin install_app script
       template: src=templates/install_app.py dest=/tmp/install_app.py
+    - name: Test nexus
+      maven_artifact: group_id=ru.sbrf.ofep.distribution artifact_id=ofep-distr dest=/{{ovp_tmpdir}}/ofep-distr.latest.zip
   vars:
       ovp_tmpdir: /tmp/ovp
       app: app
