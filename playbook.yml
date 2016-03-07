@@ -15,22 +15,32 @@
     #  ignore_errors: True
     #- name: test unrar
     #  unarchive: src={{test_url}} dest=/tmp/test1 copy=no
+    #- shell: echo {{groups['mq']}}
+    #"{{ hostvars[groups['oracle'][0] if 'oracle' in groups else groups['all'][0]]['ansible_host'] | default('10.21.25.212')}}"
   roles:
     - williamyeh.oracle-java
-    - ansible-zookeeper
-    - ansible-storm
-    #- liquibase
-    #- jboss
   vars:
     java_version: 7
     java_download_from_oracle: true
     java_remove_download: false
     java_subversion: 80
-    storm_nimbus_enabled: true
+- hosts: zookeeper
+  become: true
+  roles:
+    - ansible-zookeeper
+  vars:
+    zookeeper_hosts:
+      - {host: test1, id: 1}
+- hosts: storm
+  become: true
+  roles:
+    - ansible-storm
+  vars:
     storm_supervisor_enabled: true
-    storm_ui_enabled: true
-    nimbus_host: "{{ansible_host}}"
-    storm_ui_host: "{{ansible_host}}"
+    nimbus_host: test1
+    storm_nimbus_enabled: nimbus_host in [ansible_host, "127.0.0.1", ansible_hostname]
+    storm_ui_host: test1
+    storm_ui_enabled: storm_ui_host in [ansible_host, "127.0.0.1", ansible_hostname]
     storm_logviewer_enabled: true
     zookeeper_hosts:
-      - {host: "{{ansible_host}}", id: 1}
+      - {host: test1, id: 1}
