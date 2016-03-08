@@ -1,12 +1,9 @@
 [submodule "roles/ansible-oracle-java"]
 	path = roles/ansible-oracle-java
-	url = https://github.com/William-Yeh/ansible-oracle-java.git
-[submodule "roles/williamyeh.oracle-java"]
-	path = roles/williamyeh.oracle-java
-	url = https://github.com/William-Yeh/ansible-oracle-java.git
+	url = https://github.com/vadikgo/ansible-oracle-java.git
 [submodule "roles/ansible-zookeeper"]
-	path = roles/ansible-zookeeper
-	url = https://github.com/vadikgo/ansible-zookeeper.git
+    path = roles/ansible-zookeeper
+    url = https://github.com/vadikgo/ansible-zookeeper.git
 [submodule "roles/ansible-storm"]
-	path = roles/ansible-storm
-	url = https://github.com/vadikgo/ansible-storm.git
+    path = roles/ansible-storm
+    url = https://github.com/vadikgo/ansible-storm.git
