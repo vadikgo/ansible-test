@@ -1,10 +1,11 @@
-vm_list = ['test1']
+vm_list = ['test1', 'test2']
 
 Vagrant.configure(2) do |config|
 
-  for vm_name in vm_list do
+  vm_list.each_with_index do |vm_name, vm_index|
       config.vm.define vm_name do |vmn|
           vmn.vm.box = "boxcutter/ol67"
+          vmn.vm.box_check_update = false
 
           provider = (ARGV[2] || ENV['VAGRANT_DEFAULT_PROVIDER'] || :virtualbox).to_sym
 
@@ -18,7 +19,7 @@ Vagrant.configure(2) do |config|
           if provider == :parallels
               vmn.vm.provider "parallels" do |prl|
                 prl.memory = "1024"
-                prl.name = "test1"
+                prl.name = vm_name
                 prl.linked_clone = true
                 prl.update_guest_tools = false
                 prl.check_guest_tools = false
@@ -26,7 +27,8 @@ Vagrant.configure(2) do |config|
           end
 
           vmn.vm.hostname = vm_name
-          vmn.vm.network :forwarded_port, guest: 8088, host: 8088 # storm ui
+          vmn.vm.network "private_network", ip: "192.168.50.#{2+vm_index}"
+          vmn.vm.network :forwarded_port, guest: 8088, host: 8088+vm_index # storm ui
 
         #  config.vm.provision "shell", inline: <<-SHELL
         #     sudo yum update -y
@@ -35,8 +37,8 @@ Vagrant.configure(2) do |config|
           vmn.vm.provision "ansible" do |ansible|
             ansible.verbose = "v"
             ansible.groups = {
-              "zookeeper" => ["test1", "test2"],
-              "storm" => ["test1", "test2"],
+              "zookeeper" => vm_list,
+              "storm" => vm_list,
               "all_groups:children" => ["zookeeper", "storm"]
             }
             ansible.playbook = "playbook.yml"

@@ -2,23 +2,18 @@
 - hosts: all
   become: true
   pre_tasks:
-    #- name: update system
-    #  yum: name=* state=latest
     - name: ensure packages required are installed
       yum: pkg={{item}} state=latest
       with_items:
         - vim
         - bc
         - unzip
-    #- name: Install unrar if it is not installed
-    #  command: yum install {{unrar_url}} --nogpgcheck creates=/usr/bin/unrar
-    #  ignore_errors: True
-    #- name: test unrar
-    #  unarchive: src={{test_url}} dest=/tmp/test1 copy=no
+        - nc
+        - telnet
     #- shell: echo {{groups['mq']}}
     #"{{ hostvars[groups['oracle'][0] if 'oracle' in groups else groups['all'][0]]['ansible_host'] | default('10.21.25.212')}}"
   roles:
-    - williamyeh.oracle-java
+    - ansible-oracle-java
   vars:
     java_version: 7
     java_download_from_oracle: true
@@ -30,17 +25,18 @@
     - ansible-zookeeper
   vars:
     zookeeper_hosts:
-      - {host: test1, id: 1}
+      - {host: 192.168.50.2, id: 1}
 - hosts: storm
   become: true
   roles:
     - ansible-storm
   vars:
     storm_supervisor_enabled: true
-    nimbus_host: test1
-    storm_nimbus_enabled: nimbus_host in [ansible_host, "127.0.0.1", ansible_hostname]
-    storm_ui_host: test1
-    storm_ui_enabled: storm_ui_host in [ansible_host, "127.0.0.1", ansible_hostname]
+    nimbus_host: 192.168.50.2
+    storm_nimbus_enabled: nimbus_host in ansible_all_ipv4_addresses
+    storm_ui_host: 192.168.50.2
+    storm_ui_port: 8088
+    storm_ui_enabled: storm_ui_host in ansible_all_ipv4_addresses
     storm_logviewer_enabled: true
     zookeeper_hosts:
-      - {host: test1, id: 1}
+      - {host: 192.168.50.2, id: 1}
