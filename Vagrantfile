@@ -1,4 +1,4 @@
-vm_list = ['test1', 'test2']
+vm_list = ['test1']
 
 Vagrant.configure(2) do |config|
 

@@ -31,11 +31,12 @@
   roles:
     - ansible-storm
   vars:
+    storm_version: 0.10.0
     storm_supervisor_enabled: true
     nimbus_host: 192.168.50.2
     storm_nimbus_enabled: nimbus_host in ansible_all_ipv4_addresses
     storm_ui_host: 192.168.50.2
-    storm_ui_port: 8088
+    storm_ui_port: 8080
     storm_ui_enabled: storm_ui_host in ansible_all_ipv4_addresses
     storm_logviewer_enabled: true
     zookeeper_hosts:
