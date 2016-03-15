@@ -41,7 +41,7 @@ Vagrant.configure(2) do |config|
               "storm" => vm_list,
               "all_groups:children" => ["zookeeper", "storm"]
             }
-            ansible.playbook = "playbook.yml"
+            ansible.playbook = "test.yml"
           end
       end
   end

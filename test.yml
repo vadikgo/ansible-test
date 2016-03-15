@@ -1,12 +1,14 @@
 ---
 - hosts: all
   tasks:
-    - name: Test
-      shell: echo test {% for i in zookeeper_hosts %}{{ i['host'] }}:123,{% endfor %}
+      - shell: echo {{[ansible_hostname] | union(ansible_all_ipv4_addresses)}}
+      - shell: echo {{zookeeper_hosts |map(attribute='host')|join(':'+port|string+',')}}:{{port}}
+      #- shell: echo {{zookeeper_hosts |map('selectattr', 'host', ansible_hostname)}}
 
   vars:
       ovp_tmpdir: /tmp/ovp
       app: app
+      port: 123
       ovp_clusters:
           - { name: CLS-AD, nodes: [SBT-OPBIB-213, SBT-OPBIB-214], prefix: AD,
               apps: [ Ovp-Admin-15.3.0.war, SchedulerTask-15.3.0-AD.jar, OvpDiagnost-15.3.0.war ] }
@@ -21,3 +23,4 @@
       zookeeper_hosts:
         - {host: 192.168.50.2, id: 1}
         - {host: 192.168.50.3, id: 2}
+        - {host: macbookpro.local, id: 3}
